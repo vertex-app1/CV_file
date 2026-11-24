@@ -1,0 +1,555 @@
+
+      <!DOCTYPE html>
+      <html lang="en" dir="ltr">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Name — Interactive Portfolio</title>
+        <meta name="description" content="Interactive Smart CV of Your Name. View skills, projects, and contact information.">
+        <meta name="keywords" content="Your Name, portfolio, resume, CV, developer, designer">
+        
+        <!-- OpenGraph SEO Meta Tags -->
+        <meta property="og:title" content="Your Name — Interactive Portfolio">
+        <meta property="og:description" content="Interactive Smart CV of Your Name.">
+        <meta property="og:type" content="profile">
+        
+        
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+          body {
+            background: linear-gradient(135deg, #131710 0%, #1e2617 50%, #11140e 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+          }
+          
+          /* Dynamic translation switch */
+          .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            left: auto;
+            z-index: 100;
+          }
+          .lang-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #a4b465;
+          }
+
+          
+
+          header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 80px 20px 30px;
+            text-align: center;
+            position: relative;
+          }
+          .profile-container {
+            position: relative;
+            width: 154px;
+            height: 154px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+          }
+          .profile-container::before {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: conic-gradient(#a4b465, #535d0a, #a4b465);
+            animation: rotateBorder 6s linear infinite;
+            z-index: 0;
+          }
+          @keyframes rotateBorder { to { transform: rotate(360deg); } }
+          .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            border: 4px solid #1a1f15;
+            background: #2b2e25;
+          }
+          .profile-name {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+          }
+          .profile-title {
+            color: #a4b465;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 2px;
+          }
+          
+          /* Audio Bio */
+          .audio-player {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 18px;
+            border-radius: 30px;
+            width: 240px;
+            margin: 12px 0;
+          }
+          .play-btn {
+            background: #a4b465;
+            border: none;
+            color: #1a1f15;
+            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform 0.15s;
+          }
+          .play-btn:hover { transform: scale(1.05); }
+          .player-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #a4b465;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          .progress-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+          }
+          .progress {
+            height: 100%;
+            width: 0%;
+            background: #a4b465;
+            border-radius: 5px;
+          }
+
+          nav.navigation ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 24px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 14px;
+          }
+          nav.navigation a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+          }
+          nav.navigation a:hover { color: #a4b465; }
+
+          hr {
+            border: none;
+            height: 1px;
+            width: 60%;
+            margin: 40px auto;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+          }
+
+          .glass-box {
+            width: 90%;
+            max-width: 720px;
+            margin: 0 auto 40px;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: left;
+          }
+          .glass-box h2 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #a4b465;
+            margin-bottom: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+          }
+           .about-text {
+            line-height: 1.8;
+            color: #d8e2dc;
+            font-size: 15px;
+            text-align: left;
+            white-space: pre-wrap;
+          }
+
+          /* Social link badges */
+          .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            max-width: 500px;
+          }
+          .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 600;
+          }
+          .social-link:hover {
+            color: #a4b465;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+          }
+
+          /* Skills grid layout */
+          .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+          }
+          .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #d8e2dc;
+            font-weight: 500;
+          }
+          .skill-bullet {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #a4b465;
+            flex-shrink: 0;
+          }
+          
+          /* Projects grid */
+          .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+          }
+          .project {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.2s, background 0.2s, border-color 0.2s;
+          }
+          .project:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #a4b465;
+          }
+          .project-title {
+            color: #a4b465;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+          }
+          .project-desc {
+            font-size: 13.5px;
+            color: #cdd5cb;
+            line-height: 1.6;
+          }
+
+          footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+          }
+          footer a {
+            color: #a4b465;
+            text-decoration: none;
+            font-weight: 600;
+          }
+          footer a:hover { text-decoration: underline; }
+
+          /* Specialization - Developer GitHub section styling */
+          .github-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+          }
+          .github-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+            text-align: left;
+          }
+          .github-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #a4b465;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+          }
+          .github-card-title {
+            color: #a4b465;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .github-card-desc {
+            font-size: 13px;
+            color: #b0b5aa;
+            line-height: 1.5;
+            flex-grow: 1;
+          }
+          .github-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+          }
+          .github-star-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+          }
+
+          /* Specialization - Designer Bento Gallery styling */
+          .designer-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+          }
+          .designer-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            position: relative;
+            cursor: pointer;
+            text-align: left;
+          }
+          .designer-card:hover {
+            transform: scale(1.02);
+            border-color: #a4b465;
+          }
+          .designer-img-placeholder {
+            height: 140px;
+            background: linear-gradient(135deg, #535d0a33, rgba(255,255,255,0.05));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 24px;
+          }
+          .designer-card-info {
+            padding: 12px;
+          }
+          .designer-card-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #f0f3e8;
+          }
+          .designer-card-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #a4b465;
+            font-weight: 700;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+          }
+
+          @media (max-width: 600px) {
+            header { padding: 40px 15px 20px; }
+            .profile-name { font-size: 32px; }
+            .glass-box { padding: 24px 20px; margin-bottom: 30px; }
+            .profile-container { width: 124px; height: 124px; }
+            .profile-container::before { width: 138px; height: 138px; }
+            .profile-img { width: 120px; height: 120px; }
+          }
+        </style>
+      </head>
+      <body>
+        
+        <div class="mesh-layer" style="position:fixed; inset:0; z-index:-1; background: radial-gradient(circle at 30% 20%, rgba(164, 180, 101, 0.2) 0%, transparent 60%), radial-gradient(circle at 80% 80%, rgba(83, 93, 10, 0.3) 0%, transparent 60%); filter: blur(50px);"></div>
+      
+
+        <div class="lang-switcher">
+          <a href="?lang=ar" class="lang-btn">
+            🌐 العربية
+          </a>
+        </div>
+
+         <header>
+          <div class="profile-container">
+            <img class="profile-img" src="https://ui-avatars.com/api/?name=Your%20Name&background=535d0a&color=fff&size=150" alt="">
+          </div>
+
+          <h1 class="profile-name">Your Name</h1>
+          <p class="profile-title">Your Title</p>
+
+          <div class="social-links">
+            
+            
+            
+            
+          </div>
+
+          
+
+          <nav class="navigation">
+            <ul>
+              <li><a href="#about">About Me</a></li>
+              <li><a href="#skills">Technical Skills</a></li>
+              <li><a href="#myWork">My Work</a></li>
+            </ul>
+          </nav>
+        </header>
+            
+        <hr/>
+
+        <section id="about" class="glass-box">
+          <h2>About Me</h2>
+          <div class="about-text">No information provided yet.</div>
+        </section>
+
+        <hr/>
+
+        <section id="skills" class="glass-box">
+  <h2>Technical Skills</h2>
+  <div class="skills-grid">
+    <p class="italic" style="color: rgba(255,255,255,0.4); font-size: 13.5px;">No skills listed yet.</p>
+  </div>
+</section>
+
+        <hr/>
+
+        <!-- Specialization blocks -->
+        
+        
+        
+
+        <section id="myWork" class="glass-box">
+          <h2>My Work</h2>
+          <div class="projects-list">
+            <p style="color:#889278; font-style:italic;">No projects featured yet.</p>
+          </div>
+        </section>
+
+        <footer>
+          <p>© 2026 . All rights reserved.</p>
+        </footer>
+
+        <script>
+          
+
+          // Fetch GitHub repos for developer specialization
+          const githubUsername = "";
+          const accentColor = "#a4b465";
+          if (githubUsername) {
+            fetch("https://api.github.com/users/" + githubUsername + "/repos?sort=updated&per_page=6")
+              .then(res => res.json())
+              .then(repos => {
+                const grid = document.getElementById("github-grid");
+                if (!grid) return;
+                
+                if (Array.isArray(repos) && repos.length > 0) {
+                  grid.innerHTML = repos.map(repo => {
+                    return '<a href="' + repo.html_url + '" target="_blank" class="github-card">' +
+                      '<div class="github-card-title">' +
+                        '<svg style="width:16px; height:16px; fill:' + accentColor + ';" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>' +
+                        '<span>' + repo.name + '</span>' +
+                      '</div>' +
+                      '<p class="github-card-desc">' + (repo.description || "No description provided.") + '</p>' +
+                      '<div class="github-card-meta">' +
+                        '<span>' + (repo.language || "TypeScript") + '</span>' +
+                        '<span class="github-star-icon">' +
+                          '<svg style="width:12px; height:12px; fill:rgba(255,255,255,0.5);" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.191-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.209l8.2-1.191L12 .587z"/></svg>' +
+                          '<span>' + repo.stargazers_count + '</span>' +
+                        '</span>' +
+                      '</div>' +
+                    '</a>';
+                  }).join("");
+                } else {
+                  grid.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-style: italic; font-size: 14px; text-align: center; width: 100%;">No public repositories found.</div>';
+                }
+              })
+              .catch(err => {
+                const grid = document.getElementById("github-grid");
+                if (grid) {
+                  grid.innerHTML = '<div style="color: rgba(255,255,255,0.4); font-style: italic; font-size: 14px; text-align: center; width: 100%;">Failed to load GitHub repositories.</div>';
+                }
+              });
+          }
+        </script>
+      </body>
+      </html>
+    
